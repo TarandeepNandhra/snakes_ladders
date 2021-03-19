@@ -38,4 +38,11 @@ describe SnakesLadders do
     end
   end
 
+  # describe 'win_game' do
+  #   it 'checks if either player has won the game' do
+  #     subject.instance_variable_set(:@player_2_pos, 100)
+  #     expect(subject.win_game).to eq("Player 2 Wins!")
+  #   end
+  # end
+
 end

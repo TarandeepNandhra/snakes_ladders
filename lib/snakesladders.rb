@@ -25,7 +25,7 @@ class SnakesLadders
   def roll
     roll_1 = @dice.roll_dice
     roll_2 = @dice.roll_dice
-    return roll_1 + roll_2, roll_1 == roll_2
+    return [roll_1 + roll_2, roll_1 == roll_2]
   end
 
   def jump?
@@ -40,15 +40,18 @@ class SnakesLadders
     @player_2_pos -= 2 * (@player_2_pos % 100) if @player_2_pos > 100
   end
 
-  def play_game
+  def win_game
+    return "Player 1 Wins!" if @who == 0
+    return "Player 2 Wins!"
+  end
+
+  def play
+    # game over method
     total_roll, extra_turn? = roll
-    # check if position + roll is 100?
-    # if not then update position
-    # check if over100 -> bounce
-
-    # if at a jump location
+    move_up_board(total_roll)
+    return win_game if check_winner?
+    bounce if over_100?
     update_position(JUMPS[jump_pos]) if jump?
-
     who unless extra_turn?
 
   end
@@ -56,13 +59,26 @@ class SnakesLadders
   private
 
   def jump_pos
-    JUMPS[@player_1_pos] if who == 0
+    JUMPS[@player_1_pos] if @who == 0
     JUMPS[@player_2_pos]
   end
 
   def update_position(position)
-    @player_1_pos = position if who == 0
+    @player_1_pos = position if @who == 0
     @player_2_pos = position
+  end
+
+  def move_up_board(amount)
+    @player_1_pos += amount if @who == 0
+    @player_2_pos += amount
+  end
+
+  def check_winner?
+    player_1_pos == 100 || player_2_pos == 100
+  end
+
+  def over_100?
+    player_1_pos > 100 || player_2_pos > 100
   end
 
 end
